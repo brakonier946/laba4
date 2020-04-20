@@ -1,0 +1,88 @@
+#include "univer.h"
+#include "teacher.h"
+#include <iostream>
+#include "stringUtilities.h"
+#include "myStack.h"
+
+using namespace std;
+
+void univer::addTeacher(teacher t) {
+	teachers.push(t);
+}
+
+string univer::printToFile() {
+	string data = name + delimiter + to_string(number_of_faculties) + delimiter + to_string(number_of_graduates) + delimiter;
+
+	auto head = teachers.getLastNode();
+	while (head) {
+		data += head->data.toFileString() + delimiter;
+		head = head->prev;
+	}
+
+	return data;
+}
+
+univer univer::createFromFile(string data) {
+	univer u;
+
+	auto dataSplitted = stringUtilities::split(data, u.delimiter);
+
+	u.name = dataSplitted.at(0);
+	u.number_of_faculties = std::stoi(dataSplitted.at(1));
+	u.number_of_graduates = std::stoi(dataSplitted.at(2));
+
+	for (int i = 3; i < dataSplitted.size(); i++)
+		u.teachers.push(teacher::createFromFile(dataSplitted.at(i)));
+	u.teachers.sort();
+
+	return u;
+}
+
+univer univer::createFromConsole() {
+	univer u;
+	cout << endl;
+
+	cout << "name of university: ";
+	cin >> u.name;
+
+	cout << "number of faculties: ";
+	cin >> u.number_of_faculties;
+
+	cout << "number of graduates: ";
+	cin >> u.number_of_graduates;
+
+	int numberOfTeachers;
+	cout << "number of teachers: ";
+	cin >> numberOfTeachers;
+	for (int i = 0; i < numberOfTeachers; i++)
+		u.addTeacher(teacher::createFromConsole());
+	u.teachers.sort();
+
+	return u;
+}
+
+string univer::writeToConsole() {
+	string d = "name of university: " + name + "\n" +
+			   "number of faculties: " + to_string(number_of_faculties) + "\n" +
+			   "number of graduates: " + to_string(number_of_graduates) + "\n" +
+			   "data about teachers: " + "\n";
+	for (int i = 0; i < teachers.size(); i++) {
+		d += teachers.at(i).writeToConsole();
+		if (i != teachers.size() - 1)
+			d += "\n";
+	}
+	return d;
+}
+
+int univer::getValueSortedProperty() {
+	switch (sortedVariable)
+	{
+		case typeSort::numberOfFacultiesProperty:
+			return number_of_faculties;
+		case typeSort::numberOfGraduatesProperty:
+			return number_of_graduates;
+		case typeSort::nameProperty:
+		default:
+			return (int)name[0];
+	} 
+}
