@@ -7,5 +7,5 @@ using namespace std;
 
 class baseOutputClass {
 public:
-	virtual string writeToConsole() = 0;
+	virtual void writeToConsole() = 0;
 };

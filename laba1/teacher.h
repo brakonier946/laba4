@@ -7,17 +7,17 @@ using namespace std;
 
 class teacher : public baseOutputClass {
 private:
-	string delimiter = "#";
+	char delimiter = '#';
 
 public:
-	string name;
-	string surname;
-	string patronymic;
+	char name[20];
+	char surname[20];
+	char patronymic[20];
 
-	string writeToConsole();
+	void writeToConsole();
 
 	static teacher createFromConsole();
-	static teacher createFromFile(string data);
+	static teacher createFromFile(string* data);
 
 	string toFileString();
 
@@ -45,4 +45,10 @@ public:
 	friend bool operator <= (teacher& first, teacher& second) {
 		return (int)first.name[0] <= (int)second.name[0];
 	}
+
+	/*~teacher() {
+		name.clear();
+		surname.clear();
+		patronymic.clear();
+	}*/
 };

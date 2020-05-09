@@ -21,25 +21,30 @@ teacher teacher::createFromConsole() {
 	return t;
 }
 
-teacher teacher::createFromFile(string data) {
+teacher teacher::createFromFile(string* data) {
 	teacher t;
 
-	auto dataSplitted = stringUtilities::split(data, t.delimiter);
+	auto dataSplitted = stringUtilities::split(*data, t.delimiter);
 
-	t.name = dataSplitted.at(0);
-	t.surname = dataSplitted.at(1);
-	t.patronymic = dataSplitted.at(2);
+	strcpy_s(t.name, sizeof(t.name), dataSplitted.at(0));
+	strcpy_s(t.surname, sizeof(t.surname), dataSplitted.at(1));
+	strcpy_s(t.patronymic, sizeof(t.patronymic), dataSplitted.at(2));
 
 	return t;
 }
 
 string teacher::toFileString() {
-	return name + delimiter + surname + delimiter + patronymic;
+	char result[sizeof(name) + sizeof(surname) + sizeof(patronymic) + 3];
+	strcpy_s(result, sizeof(name), name);
+	strcat_s(result, 1, &delimiter);
+	strcat_s(result, sizeof(surname), surname);
+	strcat_s(result, 1, &delimiter);
+	strcat_s(result, sizeof(patronymic), patronymic);
+	return string(result);
 }
 
-string teacher::writeToConsole() {
-	return
-		"	name: " + name + "\n" +
-		"	surname: " + surname + "\n" +
-		"	patronymic: " + patronymic + "\n";
+void teacher::writeToConsole() {
+	cout << "\tname: " << name << endl
+		<< "\tsurname: " << surname << endl
+		<< "\tpatronymic: " << patronymic;
 }

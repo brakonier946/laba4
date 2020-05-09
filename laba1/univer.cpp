@@ -27,12 +27,12 @@ univer univer::createFromFile(string data) {
 
 	auto dataSplitted = stringUtilities::split(data, u.delimiter);
 
-	u.name = dataSplitted.at(0);
+	strcpy_s(u.name, sizeof(u.name), dataSplitted.at(0));
 	u.number_of_faculties = std::stoi(dataSplitted.at(1));
 	u.number_of_graduates = std::stoi(dataSplitted.at(2));
 
 	for (int i = 3; i < dataSplitted.size(); i++)
-		u.teachers.push(teacher::createFromFile(dataSplitted.at(i)));
+		u.teachers.push(teacher::createFromFile(&string(dataSplitted.at(i))));
 	u.teachers.sort();
 
 	return u;
@@ -61,17 +61,18 @@ univer univer::createFromConsole() {
 	return u;
 }
 
-string univer::writeToConsole() {
-	string d = "name of university: " + name + "\n" +
-			   "number of faculties: " + to_string(number_of_faculties) + "\n" +
-			   "number of graduates: " + to_string(number_of_graduates) + "\n" +
-			   "data about teachers: " + "\n";
+void univer::writeToConsole() {
+	cout << "name of university: " << name << endl
+		<< "number of faculties: " << number_of_faculties << endl
+		<< "number of graduates: " << number_of_graduates << endl
+		<< "data about teachers: " << endl;
+	
 	for (int i = 0; i < teachers.size(); i++) {
-		d += teachers.at(i).writeToConsole();
+		auto k = teachers.at(i);
+		k.writeToConsole();
 		if (i != teachers.size() - 1)
-			d += "\n";
+			cout << endl;
 	}
-	return d;
 }
 
 int univer::getValueSortedProperty() {

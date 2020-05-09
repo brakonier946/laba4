@@ -1,13 +1,13 @@
 #pragma once
 
-#include <vector>
 #include <string>
 #include <iostream>
+#include "myStack.h"
 
 using namespace std;
 
 class stringUtilities {
 public:
-	static vector<string> split(string data, string delimiter);
+	static myStack<char*> split(string data, char delimiter);
 };
 

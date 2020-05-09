@@ -13,9 +13,9 @@ using namespace std;
 class univer : public baseOutputClass {
 
 private:
-	string delimiter = "_";
+	char delimiter = '_';
 public:
-	string name;
+	char name[20];
 	int number_of_faculties;
 	int number_of_graduates;
 	myStack<teacher> teachers;
@@ -24,7 +24,7 @@ public:
 	void addTeacher(teacher t);
 
 	string printToFile();
-	string writeToConsole();
+	void writeToConsole();
 	int getValueSortedProperty();
 
 	static univer createFromFile(string data);
@@ -40,7 +40,7 @@ public:
 		return first.getValueSortedProperty() >= second.getValueSortedProperty();
 	}
 
-	friend bool operator <= (univer& first, univer& second) {
+	friend bool operator < (univer& first, univer& second) {
 		return first.getValueSortedProperty() <= second.getValueSortedProperty();
 	}
 };
